@@ -1,0 +1,34 @@
+{
+  "GBPJPY": {
+    "london_mean_range": 0.15219858805338515,
+    "asia_mean_range": 0.1145220968458387,
+    "ny_mean_range": 0.16678349834377387,
+    "london_vs_asia": 1.3289888348644525,
+    "rows": 5647,
+    "is_real": true
+  },
+  "EURJPY": {
+    "london_mean_range": 0.12139330546061215,
+    "asia_mean_range": 0.09538542429606146,
+    "ny_mean_range": 0.13019934594967988,
+    "london_vs_asia": 1.2726609579659287,
+    "rows": 5648,
+    "is_real": true
+  },
+  "EURUSD": {
+    "london_mean_range": 0.0004214799404144255,
+    "asia_mean_range": 0.0002772544821103495,
+    "ny_mean_range": 0.0005409784842345609,
+    "london_vs_asia": 1.520191620370895,
+    "rows": 5648,
+    "is_real": true
+  },
+  "XAUUSD": {
+    "london_mean_range": 7.646302734375001,
+    "asia_mean_range": 8.653261260986328,
+    "ny_mean_range": 12.440398612211647,
+    "london_vs_asia": 0.883632483032582,
+    "rows": 4523,
+    "is_real": true
+  }
+}

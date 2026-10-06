@@ -1,0 +1,26 @@
+{
+  "GBPJPY": {
+    "best_vol_hour_utc": 21,
+    "wick_corr": -0.011742938800172006,
+    "best_weekday_by_ret": "Tuesday",
+    "best_month_by_ret": 10
+  },
+  "EURJPY": {
+    "best_vol_hour_utc": 14,
+    "wick_corr": -0.002558248301617814,
+    "best_weekday_by_ret": "Tuesday",
+    "best_month_by_ret": 6
+  },
+  "EURUSD": {
+    "best_vol_hour_utc": 13,
+    "wick_corr": -0.06686817735066815,
+    "best_weekday_by_ret": "Tuesday",
+    "best_month_by_ret": 12
+  },
+  "XAUUSD": {
+    "best_vol_hour_utc": 13,
+    "wick_corr": -0.00026412709225221516,
+    "best_weekday_by_ret": "Wednesday",
+    "best_month_by_ret": 1
+  }
+}

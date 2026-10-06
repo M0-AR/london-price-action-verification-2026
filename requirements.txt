@@ -1,0 +1,8 @@
+# Hussein London price-action — pinned deps (no API key needed)
+pandas>=2.0
+numpy>=1.26
+matplotlib>=3.8
+pyyaml>=6.0
+requests>=2.31
+yfinance>=0.2.40
+scipy>=1.12

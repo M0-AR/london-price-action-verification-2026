@@ -1,0 +1,38 @@
+{
+  "GBPJPY": {
+    "pair": "GBPJPY",
+    "daily_rows": 1300,
+    "intraday_rows": 5647,
+    "intraday_sources": [
+      "yahoo-15m"
+    ],
+    "is_real": true
+  },
+  "EURJPY": {
+    "pair": "EURJPY",
+    "daily_rows": 1300,
+    "intraday_rows": 5648,
+    "intraday_sources": [
+      "yahoo-15m"
+    ],
+    "is_real": true
+  },
+  "EURUSD": {
+    "pair": "EURUSD",
+    "daily_rows": 1300,
+    "intraday_rows": 5648,
+    "intraday_sources": [
+      "yahoo-15m"
+    ],
+    "is_real": true
+  },
+  "XAUUSD": {
+    "pair": "XAUUSD",
+    "daily_rows": 1258,
+    "intraday_rows": 4523,
+    "intraday_sources": [
+      "yahoo-15m"
+    ],
+    "is_real": true
+  }
+}

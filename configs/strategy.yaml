@@ -1,0 +1,70 @@
+# Formalised Hussein claims -> testable parameters (UTC everywhere)
+pair_universe:
+  - GBPJPY
+  - EURJPY
+  - EURUSD
+  - XAUUSD
+yahoo_symbols:
+  GBPJPY: GBPJPY=X
+  EURJPY: EURJPY=X
+  EURUSD: EURUSD=X
+  XAUUSD: GC=F
+stooq_symbols:
+  GBPJPY: gbpjpy
+  EURJPY: eurjpy
+  EURUSD: eurusd
+  XAUUSD: xauusd
+
+session:
+  london_window_utc: ["06:00", "10:00"]   # 10:00-12:30 UAE ~= 06:00-08:30 UTC + 1h pre/post; kill-zone 07-10 UTC
+  trade_days: [0, 1, 2, 3, 4]  # Mon-Fri
+  timeframe: 15min
+  htf_timeframe: 1H
+
+strategy:
+  risk_per_trade: 0.01        # 1%
+  max_risk_high_conviction: 0.025
+  daily_loss_cap: 0.03
+  max_trades_per_week: 5
+  max_trades_per_day: 1
+  rr: 2.0
+  sl_buffer_atr: 0.2
+  support_lookback: 20
+  lta_lookback: 5             # low-traffic area: left-side range must be clean
+  lta_max_obstacle_atr: 0.5
+  min_wick_ratio: 0.35        # bottom/top wick / full range
+  atr_period: 14
+  spread_pips_GBPJPY: 1.8
+  spread_pips_EURJPY: 1.6
+  spread_pips_EURUSD: 0.8
+  spread_pips_XAUUSD: 25.0    # cents
+
+walkforward:
+  n_splits: 4
+  train_ratio: 0.7
+
+uk_bank_holidays:  # skeletal list — extended in code for 2023-2026
+  - 2024-01-01
+  - 2024-03-29
+  - 2024-04-01
+  - 2024-05-06
+  - 2024-05-27
+  - 2024-08-26
+  - 2024-12-25
+  - 2024-12-26
+  - 2025-01-01
+  - 2025-04-18
+  - 2025-04-21
+  - 2025-05-05
+  - 2025-05-26
+  - 2025-08-25
+  - 2025-12-25
+  - 2025-12-26
+  - 2026-01-01
+  - 2026-04-03
+  - 2026-04-06
+  - 2026-05-04
+  - 2026-05-25
+  - 2026-08-31
+  - 2026-12-25
+  - 2026-12-28

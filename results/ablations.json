@@ -1,0 +1,79 @@
+{
+  "baseline_patient_1pct": {
+    "n": 22,
+    "win_rate": 0.3181818181818182,
+    "expectancy_R": -0.18181818181818182,
+    "profit_factor": 0.7792769768361605,
+    "return_pct": -3.112285749713406,
+    "max_dd": 0.05880041168352157,
+    "sharpe": -0.5303548953472507,
+    "wins": 7,
+    "losses": 15
+  },
+  "A1_no_stop_wideSL": {
+    "n": 22,
+    "win_rate": 0.7272727272727273,
+    "expectancy_R": 1.2272727272727273,
+    "profit_factor": 1.1421714051830991,
+    "return_pct": 0.36156022738471627,
+    "max_dd": 0.016544199217197714,
+    "sharpe": 0.2320585033089,
+    "wins": 16,
+    "losses": 6
+  },
+  "A2_impatient_FOMO": {
+    "n": 22,
+    "win_rate": 0.6363636363636364,
+    "expectancy_R": 0.9090909090909091,
+    "profit_factor": 3.4748316347756982,
+    "return_pct": 21.754202802658007,
+    "max_dd": 0.019899999999999984,
+    "sharpe": 2.8626463205802457,
+    "wins": 14,
+    "losses": 8
+  },
+  "A3_overtrading": {
+    "n": 26,
+    "win_rate": 0.34615384615384615,
+    "expectancy_R": -0.23076923076923078,
+    "profit_factor": 0.7511021203955798,
+    "return_pct": -3.9893325206482033,
+    "max_dd": 0.05851985059899998,
+    "sharpe": -0.6595573304281528,
+    "wins": 9,
+    "losses": 17
+  },
+  "A4_overrisk_5pct": {
+    "n": 22,
+    "win_rate": 0.3181818181818182,
+    "expectancy_R": -0.18181818181818182,
+    "profit_factor": 0.7271146943198591,
+    "return_pct": -17.514605090633562,
+    "max_dd": 0.27023752558203096,
+    "sharpe": -0.6838415520057062,
+    "wins": 7,
+    "losses": 15
+  },
+  "A5_ignore_bankholiday": {
+    "n": 22,
+    "win_rate": 0.3181818181818182,
+    "expectancy_R": -0.18181818181818182,
+    "profit_factor": 0.7792769768361605,
+    "return_pct": -3.112285749713406,
+    "max_dd": 0.05880041168352157,
+    "sharpe": -0.5303548953472507,
+    "wins": 7,
+    "losses": 15
+  },
+  "A6_no_wick_no_LTA": {
+    "n": 48,
+    "win_rate": 0.375,
+    "expectancy_R": 0.125,
+    "profit_factor": 1.1961964489681898,
+    "return_pct": 5.666333944332136,
+    "max_dd": 0.06821240756668659,
+    "sharpe": 0.5729463500116851,
+    "wins": 18,
+    "losses": 30
+  }
+}

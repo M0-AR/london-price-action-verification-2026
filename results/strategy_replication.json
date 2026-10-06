@@ -1,0 +1,158 @@
+{
+  "GBPJPY": {
+    "n": 22,
+    "win_rate": 0.3181818181818182,
+    "expectancy_R": -0.18181818181818182,
+    "profit_factor": 0.7792769768361605,
+    "return_pct": -3.112285749713406,
+    "max_dd": 0.05880041168352157,
+    "sharpe": -0.5303548953472507,
+    "wins": 7,
+    "losses": 15,
+    "is_real": true,
+    "rows": 5647,
+    "walkforward": [
+      {
+        "split": 0,
+        "n": 8,
+        "win_rate": 0.25,
+        "return_pct": -1.444363870130294
+      },
+      {
+        "split": 1,
+        "n": 5,
+        "win_rate": 0.2,
+        "return_pct": -2.019206979999999
+      },
+      {
+        "split": 2,
+        "n": 4,
+        "win_rate": 0.5,
+        "return_pct": 0.6980506584233659
+      },
+      {
+        "split": 3,
+        "n": 5,
+        "win_rate": 0.4,
+        "return_pct": -0.7006616483018813
+      }
+    ]
+  },
+  "EURJPY": {
+    "n": 22,
+    "win_rate": 0.09090909090909091,
+    "expectancy_R": -0.7272727272727273,
+    "profit_factor": 0.1860097622269237,
+    "return_pct": -14.904962212384088,
+    "max_dd": 0.16573492365082437,
+    "sharpe": -4.116618960849172,
+    "wins": 2,
+    "losses": 20,
+    "is_real": true,
+    "rows": 5648,
+    "walkforward": [
+      {
+        "split": 0,
+        "n": 9,
+        "win_rate": 0.0,
+        "return_pct": -8.648275251635917
+      },
+      {
+        "split": 1,
+        "n": 7,
+        "win_rate": 0.14285714285714285,
+        "return_pct": -3.9690247610980056
+      },
+      {
+        "split": 2,
+        "n": 3,
+        "win_rate": 0.0,
+        "return_pct": -2.9700999999999977
+      },
+      {
+        "split": 3,
+        "n": 3,
+        "win_rate": 0.3333333333333333,
+        "return_pct": -0.029799999999990945
+      }
+    ]
+  },
+  "EURUSD": {
+    "n": 27,
+    "win_rate": 0.37037037037037035,
+    "expectancy_R": 0.07407407407407407,
+    "profit_factor": 1.145727785666501,
+    "return_pct": 2.323766041206632,
+    "max_dd": 0.049482045166099206,
+    "sharpe": 0.32048657419808313,
+    "wins": 10,
+    "losses": 17,
+    "is_real": true,
+    "rows": 5648,
+    "walkforward": [
+      {
+        "split": 0,
+        "n": 7,
+        "win_rate": 0.2857142857142857,
+        "return_pct": -1.0589952084040122
+      },
+      {
+        "split": 1,
+        "n": 5,
+        "win_rate": 0.6,
+        "return_pct": 2.5883955000296943
+      },
+      {
+        "split": 2,
+        "n": 10,
+        "win_rate": 0.2,
+        "return_pct": -3.0760605506972793
+      },
+      {
+        "split": 3,
+        "n": 5,
+        "win_rate": 0.6,
+        "return_pct": 4.008996080000005
+      }
+    ]
+  },
+  "XAUUSD": {
+    "n": 7,
+    "win_rate": 0.2857142857142857,
+    "expectancy_R": -0.14285714285714285,
+    "profit_factor": 0.7881592218812502,
+    "return_pct": -1.0589952084040122,
+    "max_dd": 0.04900995010000003,
+    "sharpe": -0.27617994842197224,
+    "wins": 2,
+    "losses": 5,
+    "is_real": true,
+    "rows": 4523,
+    "walkforward": [
+      {
+        "split": 0,
+        "n": 1,
+        "win_rate": 1.0,
+        "return_pct": 2.0000000000000018
+      },
+      {
+        "split": 1,
+        "n": 4,
+        "win_rate": 0.0,
+        "return_pct": -3.9403989999999944
+      },
+      {
+        "split": 2,
+        "n": 1,
+        "win_rate": 0.0,
+        "return_pct": -1.0000000000000009
+      },
+      {
+        "split": 3,
+        "n": 1,
+        "win_rate": 1.0,
+        "return_pct": 2.0000000000000018
+      }
+    ]
+  }
+}
