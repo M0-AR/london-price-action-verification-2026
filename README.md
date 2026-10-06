@@ -8,7 +8,11 @@
 
 **A complete, reproducible backtest of a retail London-session price-action style (GBPJPY / EURJPY / EURUSD / XAUUSD) — with costs on, walk-forward splits, ablations per rule, and benchmarks. All numbers below come from live public market data.**
 
-> **Live interactive version:** open **`preview.html`** in this repo (or via GitHub Pages, see § Web preview) for charts + a zero-to-pro quiz. Screenshot: `assets/screenshot-preview.png`.
+> **Live interactive version:** charts + zero-to-pro quiz —
+> **[Open the web report](https://M0-AR.github.io/london-price-action-verification-2026/preview.html)** ·
+> [mirror: /docs/preview.html](https://M0-AR.github.io/london-price-action-verification-2026/docs/preview.html) ·
+> [home: /](https://M0-AR.github.io/london-price-action-verification-2026/) (redirects to the report).
+> Local file: [`preview.html`](preview.html) (`docs/` mirror: [`docs/preview.html`](docs/preview.html)). Screenshot: `assets/screenshot-preview.png`.
 
 ---
 
@@ -28,7 +32,7 @@
 
 ![Preview — interactive web report with charts and quiz](assets/screenshot-preview.png)
 
-- **Interactive report:** [`preview.html`](preview.html) — single file, no build, works offline. Charts are drawn from the real `results/*.json` values embedded in the page; the quiz teaches the strategy from zero to pro and saves progress locally.
+- **Interactive report (live):** **[preview.html](https://M0-AR.github.io/london-price-action-verification-2026/preview.html)** · [mirror](https://M0-AR.github.io/london-price-action-verification-2026/docs/preview.html) · [home](https://M0-AR.github.io/london-price-action-verification-2026/) — single file, no build, works offline. Charts are drawn from the real `results/*.json` values embedded in the page; the quiz teaches the strategy from zero to pro and saves progress locally. Local copies: [`preview.html`](preview.html), [`docs/preview.html`](docs/preview.html).
 - **Video:** GitHub strips raw `<video>` tags. Add a demo in 2 minutes — record a ≤30s GIF as `assets/demo.gif` (`![Demo](assets/demo.gif)`) or use a clickable YouTube thumbnail. Full steps: [`docs/DEMO_VIDEO.md`](docs/DEMO_VIDEO.md).
 - **Screenshots:** regenerate after any `preview.html` change — [`docs/SCREENSHOTS.md`](docs/SCREENSHOTS.md).
 
@@ -213,8 +217,8 @@ python3 -m http.server 8000 &    # open http://localhost:8000/preview.html
 ```
 
 Deploy `preview.html` to GitHub Pages: push to `main`, then
-**Settings → Pages → Deploy from branch → `main` / root** (or `/docs` if you move it).
-The page is a single static file (+ `.nojekyll`), so no build step is needed.
+**Settings → Pages → Deploy from a branch → `main` / `/docs`** (recommended; root mirrors included).
+The page is a single static file (+ `.nojekyll` in `/` and `/docs`), so no build step is needed.
 Custom domain + HTTPS: **Settings → Pages → Custom domain** (see the official Pages docs).
 
 </details>
@@ -306,14 +310,24 @@ No dominance claim is possible — that *is* the lesson: short leaderboards (our
 
 ## Web preview & GitHub Pages deploy
 
-`preview.html` is a single static file (inline CSS/JS, no build, works offline). It embeds the real result values above as charts + the 5-level quiz with progress saved in the browser.
+`preview.html` is a single static file (inline CSS/JS, no build, works offline). It embeds the real result values above as charts + the 5-level quiz with progress saved in the browser. Mirrors (`preview.html` ↔ `docs/preview.html`, identical) plus `index.html` redirects mean the page resolves under **either** Pages source setting.
 
-**Publish it (2 minutes):**
+**Live links (click to verify in your browser):**
 
-1. Push this repo to GitHub (`main` branch).
-2. **Settings → Pages → Build and deployment → Deploy from a branch → `main` / `/ (root)`** (`.nojekyll` is already included so the file is served as-is).
-3. Open `https://<you>.github.io/<repo>/preview.html`.
-4. Optional: **Settings → Pages → Custom domain** + HTTPS for your own URL.
+| URL | Expected |
+|-----|----------|
+| [Home `/`](https://M0-AR.github.io/london-price-action-verification-2026/) | 200 — redirects to the report |
+| [`/preview.html`](https://M0-AR.github.io/london-price-action-verification-2026/preview.html) | 200 — interactive report (root mirror) |
+| [`/docs/preview.html`](https://M0-AR.github.io/london-price-action-verification-2026/docs/preview.html) | 200 — interactive report (`docs` mirror) |
+
+**Recommended setting (2 minutes):**
+
+1. Push `main`.
+2. **Settings → Pages → Build and deployment → Deploy from a branch → `main` / `/docs`** (`.nojekyll` is present in both `/` and `/docs`, so files are served as-is).
+3. Wait 1–2 min for the "pages build and deployment" Action to go green, then open the three links above.
+4. Optional: **Settings → Pages → Custom domain** + enforce HTTPS.
+
+**Why mirrors?** Project Pages serve URLs mirrored under the chosen source: source `/docs` → repo `docs/x.html` serves at `/x.html`; source `/` → repo `docs/x.html` serves at `/docs/x.html`. A green deployment only proves *something* built — the three-link check above proves *your path* exists. Our `index.html` files (root + `docs/`) redirect to `preview.html` with fallback links, so `/` always lands somewhere useful.
 
 ## 5. Threats to validity & future work
 
@@ -362,4 +376,4 @@ This repo exists to counter profit-screenshot selling. We publish losing backtes
 **Why is n so small?** By design: ≤5 trades/week discipline over ~60 days of 15m. Small-n is the point — it shows why screenshots prove nothing.
 **Why does impatient/no-stop "win" here?** Short-sample + hidden tail risk. Read §Exp-03, then re-run on a longer window before concluding anything.
 **Where is the data?** `data/` (regenerated by `00_fetch_live_data.py`), provenance in `results/provenance.json`. Synthetic files are labelled `SYNTHETIC-NOT-REAL` and never used as evidence.
-**How do I publish the web report?** Settings → Pages → Deploy from branch → `main` / root → open `/preview.html`. Details above.
+**How do I publish the web report?** Settings → Pages → Deploy from branch → `main` / `/docs` (recommended) → open `/preview.html` (mirrors: `/`, `/docs/preview.html`). Details above.

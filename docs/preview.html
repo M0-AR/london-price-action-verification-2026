@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patience as Alpha? — Interactive Verification Report</title>
+<meta name="description" content="Reproducible backtest of a retail London-session price-action discipline on live public data. Charts, methods, and a zero-to-pro quiz.">
+<style>
+:root{--bg:#0b1020;--card:#141b33;--card2:#1a2342;--ink:#eef2ff;--mut:#a5b0d0;--acc:#5eead4;--acc2:#a78bfa;--warn:#fbbf24;--bad:#f87171;--good:#34d399;--line:#263056}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#0b1020,#0d1330 40%,#0b1020);color:var(--ink)}
+a{color:var(--acc)}header{max-width:1080px;margin:0 auto;padding:56px 20px 10px}
+.badge{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:4px 12px;margin:4px 6px 0 0;font-size:12px;color:var(--mut);background:#101735}
+h1{font-size:clamp(28px,5vw,52px);line-height:1.05;margin:14px 0 8px}
+.sub{color:var(--mut);font-size:17px;max-width:760px}
+.grid{max-width:1080px;margin:0 auto;padding:20px;display:grid;gap:16px}
+@media(min-width:900px){.cols2{grid-template-columns:1fr 1fr}.cols3{grid-template-columns:1fr 1fr 1fr}.cols4{grid-template-columns:1fr 1fr 1fr 1fr}}
+.card{background:linear-gradient(180deg,var(--card),var(--card2));border:1px solid var(--line);border-radius:18px;padding:20px}
+.card h2{margin:0 0 8px;font-size:20px}.card h3{margin:14px 0 6px;font-size:15px;color:var(--acc)}
+.mut{color:var(--mut)}.kpi{font-size:30px;font-weight:800}.kpi small{font-size:13px;color:var(--mut);font-weight:400}
+table{width:100%;border-collapse:collapse;font-size:13.5px}th,td{text-align:left;padding:8px 8px;border-bottom:1px solid var(--line)}th{color:var(--mut);font-weight:600}
+.neg{color:var(--bad);font-weight:700}.pos{color:var(--good);font-weight:700}
+.bar{height:10px;border-radius:6px;background:#0e1430;border:1px solid var(--line);overflow:hidden;margin-top:6px}
+.bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2))}
+canvas{width:100%;height:220px;background:#0d1430;border:1px solid var(--line);border-radius:12px}
+.btn{display:inline-block;background:linear-gradient(90deg,var(--acc),var(--acc2));color:#06121a;font-weight:800;border:0;border-radius:12px;padding:12px 18px;cursor:pointer;font-size:15px;margin:6px 6px 0 0}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.q{border:1px solid var(--line);border-radius:14px;padding:14px;margin:10px 0;background:#0f1633}
+.q p{margin:0 0 10px;font-weight:600}
+.opt{display:block;width:100%;text-align:left;margin:6px 0;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:#131b3d;color:var(--ink);cursor:pointer}
+.opt:hover{border-color:var(--acc)}.opt.ok{border-color:var(--good);background:#0f2e26}.opt.no{border-color:var(--bad);background:#331320}
+.exp{display:none;color:var(--mut);font-size:14px;margin-top:8px}.exp.show{display:block}
+.progress{height:10px;background:#0e1430;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.progress>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--acc),var(--acc2))}
+footer{max-width:1080px;margin:0 auto;padding:20px;color:var(--mut);font-size:13px}
+code{background:#0d1430;border:1px solid var(--line);padding:2px 6px;border-radius:6px}
+.toc a{display:inline-block;margin:4px 8px 4px 0;color:var(--mut)}
+.call{border-left:4px solid var(--warn);padding:10px 14px;background:#1d1830;border-radius:0 12px 12px 0}
+</style>
+</head>
+<body>
+<header>
+<div><span class="badge">MIT</span><span class="badge">Docker ready</span><span class="badge">Python 3.12</span><span class="badge">100% real data • no API key</span><span class="badge">costs on • walk-forward • ablations</span></div>
+<h1>Patience as Alpha?</h1>
+<p class="sub">Verifying a retail <b>London-session price-action discipline</b> (GBPJPY / EURJPY / EURUSD / XAUUSD) on <b>live public data</b> — with spread costs, holiday filters, fixed-fractional risk, per-rule ablations, and benchmarks. An honest <b>null result</b>, published with code.</p>
+<div class="toc">
+<a href="#ceo">CEO summary</a>·<a href="#guide">Beginner guide</a>·<a href="#results">Results</a>·<a href="#quiz">Quiz: zero → pro</a>·<a href="#repro">Reproduce</a>·<a href="#pages">GitHub Pages</a>
+</div>
+</header>
+
+<div class="grid">
+<div class="card" id="ceo">
+<h2>CEO summary — 5 sentences</h2>
+<ol>
+<li>A public trader story promises: London morning is cleanest, simple price-action beats indicators, discipline (1% risk, ≤5 trades/week, always a stop, wait for the close) is the edge.</li>
+<li>We encoded it as code and ran it on <b>~21,500 real 15-min bars</b> (Jul–Oct 2026) + <b>~5,150 daily bars</b> (2021–2026), with spreads and risk caps.</li>
+<li><b>Discipline verifies:</b> London moves <b>1.27–1.52×</b> Asia on FX; 5% risk turns −3.1% into <b>−17.5% (27% drawdown)</b>.</li>
+<li><b>Profit does not verify here:</b> GBPJPY <span class="neg">−3.11%</span>, EURJPY <span class="neg">−14.90%</span>, EURUSD <span class="pos">+2.32%</span>, gold <span class="neg">−1.06%</span>; intervals cross/below zero.</li>
+<li>Change one number in <code>configs/strategy.yaml</code>, re-run, and every chart below updates from <i>your</i> evidence. That loop is the product.</li>
+</ol>
+<div class="call"><b>How to read this page:</b> start with the Beginner guide, skim the charts, then take the quiz. Every number is traceable to <code>results/*.json</code> in the repo.</div>
+</div>
+
+<div class="card" id="guide">
+<h2>🌱 Beginner guide — from zero to dangerous (in a good way)</h2>
+<p class="mut">Let's work this out in a step-by-step way to be sure we have the right answer. No prior knowledge assumed.</p>
+<h3>0 · What are we trading?</h3><p class="mut">GBPJPY = yen per pound. <b>Pip</b> = 0.01 (yen pairs) or 0.0001 (most others). Gold jumps harder per tick — that's why beginners start with FX.</p>
+<h3>1 · When does it move?</h3><p class="mut">Asia: quiet. <b>London 06:00–10:00 UTC: busiest for pound/yen.</b> New York afternoon: gold's peak. London's 15-min wiggle here is 1.27–1.52× Asia's.</p>
+<h3>2 · What is price action?</h3><p class="mut">Read the candle (open/high/low/close). <b>Bottom wick</b> = buyers stepped in. <b>Support</b> = floor that held before. <b>Clean-left (LTA)</b> = clear path on the left. Rule needs <b>all + a fully closed 15-min candle</b>.</p>
+<h3>3 · The only math: risk</h3><p class="mut">$10,000 paper → risk <b>1% ($100)</b>/trade, stop = "I'm wrong", target = 2× risk. Five losses ≈ −5%, alive. At 5% risk: <b>−17.5%, 27% drawdown</b>. No stop looks great — until one news candle erases half.</p>
+<h3>4 · Patience is a position</h3><p class="mut">Pros here take <b>2–3 trades/week</b> and skip the rest. Early (FOMO) entries "won" in one 60-day window — small-sample noise with hidden tail risk.</p>
+<h3>5 · Read results like a pro</h3><p class="mut">Always ask: <b>n</b> (how many trades?), costs on? every quarter consistent? interval crossing zero? If a seller hides these, walk away.</p>
+</div>
+</div>
+
+<div class="grid cols2" id="results">
+<div class="card"><h2>Session effect — London vs Asia (real 15m)</h2><canvas id="cSess" width="600" height="220"></canvas>
+<table><tr><th>Pair</th><th>London</th><th>Asia</th><th>×</th></tr>
+<tr><td>GBPJPY</td><td>0.1522</td><td>0.1145</td><td><b>1.33×</b></td></tr>
+<tr><td>EURJPY</td><td>0.1214</td><td>0.0954</td><td><b>1.27×</b></td></tr>
+<tr><td>EURUSD</td><td>0.000421</td><td>0.000277</td><td><b>1.52×</b></td></tr>
+<tr><td>XAUUSD</td><td>7.65</td><td>8.65</td><td><b>0.88×</b></td></tr></table>
+<p class="mut">Gold peaks in New York (12.44), not London — "gold is different" holds.</p></div>
+<div class="card"><h2>Strategy replication (1% risk, 2R, ≤5/wk)</h2><canvas id="cStrat" width="600" height="220"></canvas>
+<table><tr><th>Pair</th><th>n</th><th>Win%</th><th>Return%</th></tr>
+<tr><td>GBPJPY</td><td>22</td><td>31.8</td><td class="neg">−3.11</td></tr>
+<tr><td>EURJPY</td><td>22</td><td>9.1</td><td class="neg">−14.90</td></tr>
+<tr><td>EURUSD</td><td>27</td><td>37.0</td><td class="pos">+2.32</td></tr>
+<tr><td>XAUUSD</td><td>7</td><td>28.6</td><td class="neg">−1.06</td></tr></table>
+<p class="mut">Walk-forward quarters flip sign; bootstrap CI crosses (GBPJPY) or sits below zero (EURJPY). Null result.</p></div>
+</div>
+
+<div class="grid cols2">
+<div class="card"><h2>Ablations — remove one rule (GBPJPY)</h2><canvas id="cAbl" width="600" height="220"></canvas>
+<table><tr><th>Variant</th><th>Return%</th><th>Lesson</th></tr>
+<tr><td>Baseline (patient 1%)</td><td class="neg">−3.11</td><td>reference</td></tr>
+<tr><td>No-stop (wide)</td><td class="pos">+0.36</td><td>win-rate illusion, tail hidden</td></tr>
+<tr><td>Impatient entry</td><td class="pos">+21.75</td><td>small-sample artefact</td></tr>
+<tr><td>Overtrade 20/wk</td><td class="neg">−3.99</td><td>caps help</td></tr>
+<tr><td>5% risk</td><td class="neg">−17.51</td><td>ruin math</td></tr>
+<tr><td>No wick/LTA</td><td class="pos">+5.67</td><td>thresholds over-strict here</td></tr></table></div>
+<div class="card"><h2>Benchmarks — same data &amp; costs</h2><canvas id="cBen" width="600" height="220"></canvas>
+<table><tr><th>Pair</th><th>Ours</th><th>Buy-hold</th><th>Random</th><th>EMA25</th><th>RSI</th></tr>
+<tr><td>GBPJPY</td><td class="neg">−3.11</td><td>−3.41</td><td class="pos">+6.99</td><td>−0.27</td><td class="pos">+3.91</td></tr>
+<tr><td>EURJPY</td><td class="neg">−14.90</td><td>−3.90</td><td>−16.90</td><td>−0.73</td><td>−10.03</td></tr>
+<tr><td>EURUSD</td><td class="pos">+2.32</td><td>−1.44</td><td>−9.11</td><td>−13.72</td><td>−15.13</td></tr>
+<tr><td>XAUUSD</td><td class="neg">−1.06</td><td class="pos">+3.84</td><td>−19.89</td><td>−11.92</td><td>−15.06</td></tr></table>
+<p class="mut">No dominance claim possible — short leaderboards prove nothing.</p></div>
+</div>
+
+<div class="grid">
+<div class="card"><h2>Hidden patterns (hypotheses, not rules)</h2>
+<div class="grid cols3">
+<div><div class="kpi">≈0<small> wick → next-return correlation (−0.01 to −0.07)</small></div><p class="mut">Wick alone has no linear edge — confluence is the hypothesis.</p></div>
+<div><div class="kpi">13–14 UTC<small> best volatility hour (overlap)</small></div><p class="mut">London–New York overlap, except one suspect GBPJPY print at 21 UTC.</p></div>
+<div><div class="kpi">Tue / Oct<small> best day / GBPJPY month (5y daily)</small></div><p class="mut">Calendar hints only. Trade the rule, not the calendar.</p></div>
+</div></div>
+</div>
+
+<div class="grid">
+<div class="card" id="quiz">
+<h2>🎓 Interactive quiz — zero → pro (15 questions, progress saved)</h2>
+<p class="mut">Answer to reveal the explanation. Score ≥12/15 = professional literacy for this strategy. Your progress stays in this browser (localStorage).</p>
+<div class="progress"><i id="pbar"></i></div>
+<p class="mut" id="score">Score: 0 / 15 · Answered: 0</p>
+<div id="quizbox"></div>
+<button class="btn" onclick="resetQuiz()">Reset quiz</button>
+<button class="btn ghost" onclick="document.getElementById('answers').style.display='block'">Show study answers</button>
+<div id="answers" style="display:none" class="mut">
+<b>Study key:</b> 1b · 2b · 3b · 4b · 5b · 6b · 7b · 8b · 9b · 10c · 11b · 12b · 13b · 14b · 15b.
+Reread the Beginner guide for any miss, then retry — that loop is the learning.
+</div>
+</div>
+</div>
+
+<div class="grid cols2" id="repro">
+<div class="card"><h2>Reproduce in 3 commands</h2>
+<p><code>docker compose up --build</code> — or without Docker:</p>
+<p><code>pip install -r requirements.txt</code><br><code>python3 experiments/run_all.py</code><br><code>python3 -m pytest tests/ -v</code></p>
+<p class="mut">Outputs: <code>results/provenance.json</code>, <code>session_effect.json</code>, <code>strategy_replication.json</code>, <code>ablations.json</code>, <code>benchmarks.json</code>, <code>hidden_patterns.json</code>, <code>walkforward_stats.json</code>. Change <code>configs/strategy.yaml</code> → re-run → this page updates.</p></div>
+<div class="card" id="pages"><h2>Put this page on the web (GitHub Pages)</h2>
+<ol class="mut"><li>Push the repo to GitHub (<code>main</code>).</li><li><b>Settings → Pages → Build and deployment → Deploy from a branch → <code>main</code> / <code>/(root)</code></b> (this repo already includes <code>.nojekyll</code>).</li><li>Open <code>https://&lt;you&gt;.github.io/&lt;repo&gt;/preview.html</code>.</li><li>Optional: <b>Settings → Pages → Custom domain</b> + enforce HTTPS.</li></ol>
+<p class="mut">Demo video: record a ≤30s GIF → <code>assets/demo.gif</code> → <code>![Demo](assets/demo.gif)</code> in README; or YouTube clickable thumbnail. Steps: <code>docs/DEMO_VIDEO.md</code>.</p></div>
+</div>
+
+<footer>Not financial advice — a research harness. If a seller won't show costs-on results with code, walk away. · MIT · All charts from <code>results/*.json</code> (real public data, no key).</footer>
+
+<script>
+// ---------- tiny canvas bar charts (no CDN, works offline) ----------
+function bars(id, labels, vals, color){
+  var c=document.getElementById(id),x=c.getContext('2d');x.clearRect(0,0,c.width,c.height);
+  var max=Math.max.apply(null,vals.map(Math.abs).concat([1e-9]));
+  var bw=c.width/vals.length;
+  vals.forEach(function(v,i){
+    var h=Math.abs(v)/max*150, px=i*bw+bw*0.2, w=bw*0.6, py=v>=0?170-h:170;
+    x.fillStyle=v>=0?'#34d399':'#f87171'; if(id==='cSess')x.fillStyle='#5eead4';
+    if(color)x.fillStyle=color;
+    x.fillRect(px,py,w,h);
+    x.fillStyle='#a5b0d0';x.font='11px sans-serif';x.textAlign='center';
+    x.fillText(labels[i],i*bw+bw/2,200);
+    x.fillStyle='#eef2ff';x.fillText(String(v),i*bw+bw/2,(v>=0?py-6:py+h+12));
+  });
+  x.strokeStyle='#263056';x.beginPath();x.moveTo(0,170);x.lineTo(c.width,170);x.stroke();
+}
+bars('cSess',['GBPJPY','EURJPY','EURUSD','XAUUSD*'],[1.33,1.27,1.52,0.88]);
+bars('cStrat',['GJ','EJ','EU','XA'],[-3.11,-14.90,2.32,-1.06]);
+bars('cAbl',['base','noSL','early','over','5%','loose'],[-3.11,0.36,21.75,-3.99,-17.51,5.67],'#a78bfa');
+bars('cBen',['ours','BH','rnd','EMA','RSI'],[-3.11,-3.41,6.99,-0.27,3.91]);
+// ---------- quiz ----------
+var Q=[
+{q:"What does GBPJPY = 217.20 mean?",o:["217 yen buy 1 dollar","1 pound buys 217.20 yen","217 pounds buy 1 yen"],a:1,e:"First currency (GBP) is what you buy; the number is how much of the second (JPY) it costs."},
+{q:"A pip on GBPJPY is…",o:["1.00","0.01","0.0001"],a:1,e:"Yen pairs: 0.01. Most others: 0.0001. Gold is quoted in dollars, not pips."},
+{q:"Why start beginners on FX, not gold?",o:["Gold never trends","Gold moves harder per tick, sooner ruin","FX has no spread"],a:1,e:"Same mistake on gold costs more. Our gold sample: only 7 setups in 60 days, NY-driven spikes."},
+{q:"Busiest window here for pound/yen?",o:["00–05 UTC Asia","06–10 UTC London","Weekends"],a:1,e:"London averaged 1.27–1.52× Asia's 15-min range on FX in our window."},
+{q:"Gold's peak volatility here?",o:["London morning","New York overlap (~12–16 UTC)","Sunday"],a:1,e:"Gold 12.44 vs London 7.65 — NY overlap dominates. Different animal."},
+{q:"Bottom wick means…",o:["Sellers won","Buyers stepped in below, price closed up","Nothing"],a:1,e:"Long tail below + close near top = rejection of lower prices. Needs confluence, not alone."},
+{q:"Support is…",o:["A forecast","A floor where price bounced before","The daily high"],a:1,e:"We define it as the 20-bar rolling low. Old floor → potential springboard."},
+{q:"Clean-left (LTA) means…",o:["Many indicators agree","Clear path on the left, nothing blocking","Trading on a laptop left side"],a:1,e:"No overlapping ranges in the prior 5 bars — room to move."},
+{q:"The patience rule?",o:["Enter mid-candle, faster","Enter only after the 15-min candle closes","Never enter"],a:1,e:"Closed-bar only. Early entries looked better in one window — small-sample noise."},
+{q:"1% risk on $10,000 with a 50-pip-equivalent stop means…",o:["Risk $5,000","Risk $100; size = 100 ÷ stop distance","Risk nothing with a demo"],a:1,e:"Fixed-fractional: size from risk ÷ stop. Five straight losses ≈ −5%, alive."},
+{q:"Same signals at 5% risk did what?",o:["Same −3.1%","−17.5% with 27% drawdown","Turned profitable"],a:1,e:"Real ablation result. Risk is the position."},
+{q:"No-stop 'wins' (+0.36%, 73% win-rate) prove…",o:["Stops are useless","High win-rate with hidden tail risk — one gap erases weeks","You should widen forever"],a:1,e:"Classic illusion. The missing tail: a news candle erasing half an account in seconds."},
+{q:"Overtrading 20/week vs ≤5/week here?",o:["Much better","Worse: −3.99% vs −3.11%","Identical"],a:1,e:"More trades = more spread + worse quality. Caps help."},
+{q:"n=22 trades means…",o:["Proven edge","Tiny — one streak flips the sign; need splits + intervals","Enough for a course sale"],a:1,e:"Our bootstrap CI crosses zero. Small-n is why screenshots prove nothing."},
+{q:"Best next step after reading?",o:["Fund a live account","Change one config value, re-run, compare results/*.json","Buy signals"],a:1,e:"Halve risk in configs/strategy.yaml, re-run experiment 02, watch the tables move. That's research."}
+];
+var state=JSON.parse(localStorage.getItem('pa_quiz')||'{"ans":{}}');
+function render(){
+  var box=document.getElementById('quizbox');box.innerHTML='';
+  var ok=0,done=0;
+  Q.forEach(function(qq,i){
+    var d=document.createElement('div');d.className='q';
+    d.innerHTML='<p>L'+(Math.floor(i/3)+1)+' · Q'+(i+1)+': '+qq.q+'</p>';
+    qq.o.forEach(function(op,j){
+      var b=document.createElement('button');b.className='opt';b.textContent=op;
+      var prev=state.ans[i];
+      if(prev!==undefined){
+        if(j===qq.a)b.classList.add('ok');
+        else if(j===prev)b.classList.add('no');
+        b.disabled=true;
+      }
+      b.onclick=function(){
+        state.ans[i]=j;localStorage.setItem('pa_quiz',JSON.stringify(state));render();
+        var ex=d.querySelector('.exp');if(ex)ex.classList.add('show');
+      };
+      d.appendChild(b);
+    });
+    var ex=document.createElement('div');ex.className='exp'+(state.ans[i]!==undefined?' show':'');
+    ex.textContent=(state.ans[i]===qq.a?'✓ Correct. ':'✗ Not quite. ')+qq.e;
+    d.appendChild(ex);box.appendChild(d);
+    if(state.ans[i]!==undefined){done++;if(state.ans[i]===qq.a)ok++;}
+  });
+  document.getElementById('score').textContent='Score: '+ok+' / '+Q.length+' · Answered: '+done+(done===Q.length?(ok>=12?' · Professional literacy ✓':' · Review the guide and retry'):'');
+  document.getElementById('pbar').style.width=(done/Q.length*100)+'%';
+}
+function resetQuiz(){state={ans:{}};localStorage.removeItem('pa_quiz');render();}
+render();
+</script>
+</body>
+</html>
